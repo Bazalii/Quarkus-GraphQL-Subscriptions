@@ -34,7 +34,9 @@ class UserController {
 
     @Subscription
     fun subscribeToUsersWithFilter(context: Context, token: String, userName: String): Multi<User>? {
-        isValid(token)
+        if (token != "123") {
+            return Multi.createFrom().failure(TokenValidationException("Invalid token!"))
+        }
 
         return BroadcastProcessor.filter { user -> user!!.name == userName && isValid(token) }
     }
